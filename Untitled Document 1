@@ -1,0 +1,31 @@
+int brickStates[Tabmax]; // Tableau pour suivre l'état de chaque brique (0 pour inactive, 1 pour active)
+
+void initBrickStates() {
+    for (int i = 0; i < Tabmax; i++) {
+        brickStates[i] = 1; // Toutes les briques sont initialement actives
+    }
+}
+
+void drawbrick() {
+    int xr = 10;
+    int yr = 40;
+    int lr = 80;
+    int hr = 40;
+
+    for (int i = 0; i < Tabmax; i++) {
+        if (brickStates[i] == 1) {
+            changeColor(255, 0, 0);
+            for (int j = 0; j < 3; j++) {
+                xr = 10 + (i * 100);
+                yr = 40 + j * (lr);
+                drawRect(xr, yr, lr, hr);
+
+                if (((xb > xr + lr) && (yr + hr > yb)) || ((yb < yr) && (xr < xb))) {
+                    brickStates[i] = 0; // Marquer la brique comme inactive lors de la collision
+                    vitesseBally = -vitesseBally;
+                }
+            }
+        }
+    }
+}
+
