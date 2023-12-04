@@ -39,6 +39,9 @@ void drawBall(){
             
         }
     }
+    
+    
+  
     if ((yb>(WINDOW_HEIGHT-rb) || (yb<rb)) || ((x<=xb) &&(xb<=x+longueur)&&(yb>=y) ) ){
       vitesseBally=-vitesseBally;       
       
@@ -100,9 +103,27 @@ void init_game(){
 } 
    
       
- 
- 
-   
+ case SDL_MOUSEBUTTONUP:
+                    /* clique de la souris
+                     
+
+    event.motion.y | event.motion.x pour les positions de la souris*/
+
+/------------------------------------------menu start--------------------------------------------------------------------/
+                    printf("position de la souris x : %d , y : %d\n", event.motion.x, event.motion.y);
+                    if ((event.motion.x<285 && event.motion.x>63) && (event.motion.y<670 && event.motion.y>583) && vieb>0){
+                        menustart=0;
+
+                    }else if ((event.motion.x<285 && event.motion.x>63) && (event.motion.y<670 && event.motion.y>583) && vieb==0){
+                        vieb=4;
+                        nbrick=tabmax;
+                        menustart=0;
+
+                    }else if ((event.motion.x<614 && event.motion.x>391) && (event.motion.y<670 && event.motion.y>583)){
+                        freeAndTerminate();
+
+                    }
+                    break;
    
    
    

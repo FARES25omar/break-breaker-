@@ -9,122 +9,146 @@
 int rb;  //rayon ball            
 int xb;   //xball
 int yb;   //yball              
-int x;  //x du carrer
-int y;  //y du carrer
+int x;  //x du barre
+int y;  //y du barre
 int longueur;
+int hauteur;
+int xr; //xbrick 
+int yr; //ybrick
+int lr;
+int hr;
 int vitesseBallx;
 int vitesseBally;
-int Tabmax =18;
+int Tabmax ;
 int Tab[18];
 int viebrick[18]; 
-int vie =3;
+int positionx;
+int positiony;
+int espace;
+int nbbrick;
+int nbcolone;
+int vie ;
+int largbare;
+int goo;
+int espcitroullie;
 
-
-
+void barredevie(){
+    changeColor(0,0,0);
+    drawRect(0, (WINDOW_HEIGHT-largbare), WINDOW_WIDTH, largbare);
+    for (int i=0; i<vie; i++){
+        changeColor(0, 0, 0);
+        sprite((espcitroullie*i),(WINDOW_HEIGHT-(largbare)) , "/home/fares25/Downloads/Design-sans-titre.bmp");
+    }
+  
+    }
 void drawBall(){
-   changeColor(255,0,255);
+   changeColor(220,152,0);
    drawCircle(xb,yb,rb);
    xb+=vitesseBallx; //j'ai liere la vitesse avec la position ;
    yb+=vitesseBally;
-    if((xb>(WINDOW_WIDTH-rb) ||(xb<rb)) ){
+   if((xb>(WINDOW_WIDTH-rb) ||(xb<rb)) ){
      vitesseBallx=-vitesseBallx;
-    }
-    if (yb > WINDOW_HEIGHT - rb) {
+   }
+
+    if ((yb>(WINDOW_HEIGHT-rb)|| (yb<rb)) || (((xb+rb>=x) && (xb-rb<x+longueur)) && yb>y-rb)){
+      vitesseBally=-vitesseBally;       
+   }
+     
+   if (yb +rb> WINDOW_HEIGHT -largbare) {
         vie--; 
-      if (vie > 0) {
+        if (vie > 0) {
          xb = WINDOW_WIDTH / 2;
          yb = WINDOW_HEIGHT / 2;
-        } else {
-         freeAndTerminate();
-            
+         vitesseBallx = 0;
+         vitesseBally = 0;
         }
-    }
-    if ((yb>(WINDOW_HEIGHT-rb) || (yb<rb)) || ((x<=xb) &&(xb<=x+longueur)&&(yb>=y) ) ){
-      vitesseBally=-vitesseBally;       
-      
-   }
+  }
 }
-void drawSqaure(){
-   changeColor(0,225,0); 
-      drawSquare(x,y,longueur);
+void drawBarr(){
+   changeColor(255,75,0); 
+   drawRect(x, y,longueur, hauteur);
+   
+}
+
   
-}
+
 
 void init_game(){
    // mettre votre code d'initialisation ici
-   xb =WINDOW_WIDTH/2;//position de la balle 
-   yb =WINDOW_HEIGHT/2;
-   rb =20; 
-   vitesseBallx =3;
-   vitesseBally = -3;
+   xb =WINDOW_WIDTH/2;//position x de la balle 
+   yb =WINDOW_HEIGHT/2;//position y de la balle 
+   rb =20; // rayon de la bale 
+   vitesseBallx =0; //vitesse de la balle en x 
+   vitesseBally = 0; //vitesse de la balle de en y 
    x=WINDOW_WIDTH/2;
-   y=700;
-   longueur=100;
-   
-  
+   y=WINDOW_WIDTH+90;
+   longueur=200; //longeure de la barre
+   hauteur=5; //hauteur de la barre 
+   Tabmax =18; //initialisation de on tableau de brick 
+   nbcolone=6; //nobre de colone que j'ai dans mon tabelau  
+   viebrick[18]; 
+   lr=80;//largeure de brick
+   hr=40;//hauteure de brick 
+   positionx=35;
+   positiony=40;
+   espace=110; //c'est mes espaces entre les brick 
+   nbbrick=18; // c'est le nombre de brick que j'ai 
+   vie= 5; //c'est le nobre d'essaye que j'ai 
+   largbare=70;//c'est ma largeure de barre 
+   goo=1;
+   espcitroullie=80;//mon espace de citroullie
    for(int i=0;i<Tabmax;i++){
      viebrick[i]=1;
      }
-  
-     
-  } 
+ } 
   
   
        
      
  void drawbrick(){
-   int xr;
-   int yr;
-   int lr=80;
-   int hr=40;
-  
-   
-  
-   for( int j=0;j<6;j++){
-     changeColor(0,225,225);
-     for(int i=j;i<18;i=i+6){
+ 
+   for( int j=0;j<nbcolone;j++){
+     changeColor(232,84,9);
+     for(int i=j;i<Tabmax;i=i+nbcolone){
        if(viebrick[i]==1){
-         xr=(35+(j*110)); //10 c'est moon ecart 
-         yr=40+(i)/6*(lr); 
+         xr=(positionx+(j*espace)); 
+         yr=positiony+(i)/nbcolone*(lr); 
          drawRect( xr, yr, lr, hr);
-      
-           if((xb>xr) &&(xb<xr+lr)&&((yb>yr)&&(yb<yr+hr))){
-           
+         if ((xb + rb >= xr && xb - rb <= xr + lr) && (yb + rb >= yr && yb - rb <= yr + hr)) {
+            nbbrick--;
             viebrick[i]=0;
             vitesseBally=-vitesseBally;  
-       
+         }
        }
-      }
     }
   }  
 } 
-   
-      
- 
- 
-   
-   
-   
-   
-   
-   
-   
-   
-
 
 void drawGame(){
     /* Ici je dessine mon jeu
      * exemple position x, y modifiés dans KeyPressed() et utilisés pour
      * pouvoir deplacer la figure à chaque boucle de gameLoop()
      */
-   
-    clear();
-    drawBall();
-    drawSquare(x,y,150);
-    changeColor(255,0,0);
-    drawbrick();
+     if(goo==1){
+      clear();
+      sprite(0, 0,"/home/fares25/Downloads/casse-brick.bmp");
+         
+      }else if(vie>0){
+  
+        clear();
+        sprite(0, 0,"/home/fares25/Downloads/halloween.bmp");
+        barredevie();
+        drawBall();
+        drawBarr();
+       // changeColor(255,0,0);
+        drawbrick();
+     }
+    if(nbbrick==0){
+     sprite(0, 0,"/home/fares25/Downloads/GAME-OVER_4_.bmp");
+     }else if(vie==0){
+     sprite(0, 0,"/home/fares25/Downloads/halolo.bmp");
+     }
     
-    //drawCircle(100,100,100);
     actualize();
     usleep(1000000 / FPS); // 60 images par seconde | 1000000 = 1 seconde
 }
@@ -139,18 +163,22 @@ void KeyPressed(SDL_Keycode touche){
             //touche q appuyé
             printf("Q\n");
             if(x>0){
-            x=x-10;//collision du squar
+            x=x-10;//collision du squar avec la largeure de la fentre 
             }
             break;
         case SDLK_d:
             //touche d appuyé
             printf("D\n");
-            if(x+longueur<WINDOW_WIDTH-longueur/2){
+            if(x+longueur<WINDOW_WIDTH){
             x=x+10; //collision du squar
             }
             break;
         case SDLK_ESCAPE:
             freeAndTerminate();
+            break;
+            case SDLK_SPACE:
+              vitesseBallx =-6;
+              vitesseBally = -6;
             break;
         default:
             break;
@@ -184,6 +212,10 @@ void gameLoop() {
                      * event.motion.y | event.motion.x pour les positions de la souris
                      */
                     printf("position de la souris x : %d , y : %d\n", event.motion.x, event.motion.y);
+                     if ((event.motion.x<498 && event.motion.x>216 ) && (event.motion.y<795&& event.motion.y>735)){
+                        goo=0;
+                    }
+                    break;
                     break;
                 case SDL_KEYDOWN:
                     KeyPressed(event.key.keysym.sym);
